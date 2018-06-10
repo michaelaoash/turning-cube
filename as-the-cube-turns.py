@@ -14,6 +14,9 @@ win.setCoords(-3, -3, 3, 3)
 projector1 = np.array([(1,0,0.2),
                        (0,1,0.2)])
 
+# projector1 = np.array([( , , ),
+#                        ( , , )])
+
 ## Create the axes
 axisx = np.array([(-2,0,0),(2,0,0)])
 axisy = np.array([(0,-2,0),(0,2,0)])

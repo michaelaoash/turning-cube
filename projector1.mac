@@ -1,0 +1,15 @@
+/* Projection matrix */
+
+/* Clean up before running */ 
+kill (all) ;
+
+source : transpose(matrix([-2,2,-2],[2,2,-2],[2,2,-1])) ;
+
+image : transpose(matrix([-2.05,2.05],[2.05,2.05],[1.95,1.95])) ;
+
+projector : image . invert(source) ;
+
+
+projector . [2,-2,-1] ;
+
+

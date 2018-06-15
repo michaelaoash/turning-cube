@@ -15,10 +15,16 @@ win.setCoords(-3, -3, 3, 3)
 projector1 = np.array([(1,0,0.2),
                        (0,1,0.2)])
 
-# projector1 = np.array([(1, 0 ,-0.10),
-#                        (0    , 0.925,-0.10)])
+## homogeneous coordinates
+# projector2 = np.array([(1, 0, 0, 0),
+#                        (0, 1, 0, 0),
+#                        (0, 0, 1, 0),
+#                        (0, 0,-1, 0)])
 
-# x*(100+z)/100,y*(100+z)/100,0
+projector2 = np.array([(1, 0, 0.2, 0),
+                       (0, 1, 0.2, 0),
+                       (0, 0, 1, 0),
+                       (0, 0,-1, 0)])
 
 
 ## Create the axes
@@ -35,6 +41,14 @@ projectedaxisy1 = np.matmul(projector1,axisy1)
 projectedaxisy2 = np.matmul(projector1,axisy2)
 projectedaxisz1 = np.matmul(projector1,axisz1)
 projectedaxisz2 = np.matmul(projector1,axisz2)
+
+projectedaxisx1 = np.matmul(projector2,np.append(axisx1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisx1,1))[3])/10.)
+projectedaxisx2 = np.matmul(projector2,np.append(axisx2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisx2,1))[3])/10.)
+projectedaxisy1 = np.matmul(projector2,np.append(axisy1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisy1,1))[3])/10.)
+projectedaxisy2 = np.matmul(projector2,np.append(axisy2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisy2,1))[3])/10.)
+projectedaxisz1 = np.matmul(projector2,np.append(axisz1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisz1,1))[3])/10.)
+projectedaxisz2 = np.matmul(projector2,np.append(axisz2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisz2,1))[3])/10.)
+
 
 ## Plot the axes
 lineaxisx = Line(Point(projectedaxisx1[0],projectedaxisx1[1]),Point(projectedaxisx2[0],projectedaxisx2[1]))
@@ -80,7 +94,7 @@ cubeH = np.array([-1,1,1])
 while True:
 ## for C in range (0,1000):
 
-    ## Project the current cube from 3-space to 2-space
+    ## Project the current cube from 3-space to 2-space with oblique projection
     projectedcubeA = np.matmul(projector1,cubeA)
     projectedcubeB = np.matmul(projector1,cubeB)
     projectedcubeC = np.matmul(projector1,cubeC)
@@ -89,6 +103,18 @@ while True:
     projectedcubeF = np.matmul(projector1,cubeF)
     projectedcubeG = np.matmul(projector1,cubeG)
     projectedcubeH = np.matmul(projector1,cubeH)
+
+    ## Project the current cube from 3-space to 2-space with homogeneous coordinates
+    projectedcubeA = np.matmul(projector2,np.append(cubeA,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeA,1))[3])/10.)
+    projectedcubeB = np.matmul(projector2,np.append(cubeB,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeB,1))[3])/10.)
+    projectedcubeC = np.matmul(projector2,np.append(cubeC,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeC,1))[3])/10.)
+    projectedcubeD = np.matmul(projector2,np.append(cubeD,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeD,1))[3])/10.)
+    projectedcubeE = np.matmul(projector2,np.append(cubeE,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeE,1))[3])/10.)
+    projectedcubeF = np.matmul(projector2,np.append(cubeF,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeF,1))[3])/10.)
+    projectedcubeG = np.matmul(projector2,np.append(cubeG,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeG,1))[3])/10.)
+    projectedcubeH = np.matmul(projector2,np.append(cubeH,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeH,1))[3])/10.)
+
+    
 
     # Label the vertices (doesn't work when the cube is spinning)
     # for T in range(0,8):
@@ -155,8 +181,8 @@ while True:
 
     ##  Set pitch, yaw, and roll rates
     gamma = gamma + np.pi/6000
-##    beta = beta + np.pi/36000
-##    alpha = alpha + np.pi/36000
+    # beta = beta + np.pi/36000
+    # alpha = alpha + np.pi/36000
 
     ## Compute the rotation matrices
     Rx = np.array([(1 ,0,                        0),            

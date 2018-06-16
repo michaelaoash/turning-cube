@@ -26,6 +26,9 @@ projector2 = np.array([(1, 0, 0.2, 0),
                        (0, 0, 1, 0),
                        (0, 0,-1, 0)])
 
+def project2(a):
+    return np.matmul(projector2,np.append(a,1))[0:2] / ((10 - np.matmul(projector2,np.append(a,1))[3])/10.)
+
 
 ## Create the axes
 axisx1 = np.array([-2,0,0])
@@ -42,12 +45,12 @@ projectedaxisy2 = np.matmul(projector1,axisy2)
 projectedaxisz1 = np.matmul(projector1,axisz1)
 projectedaxisz2 = np.matmul(projector1,axisz2)
 
-projectedaxisx1 = np.matmul(projector2,np.append(axisx1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisx1,1))[3])/10.)
-projectedaxisx2 = np.matmul(projector2,np.append(axisx2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisx2,1))[3])/10.)
-projectedaxisy1 = np.matmul(projector2,np.append(axisy1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisy1,1))[3])/10.)
-projectedaxisy2 = np.matmul(projector2,np.append(axisy2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisy2,1))[3])/10.)
-projectedaxisz1 = np.matmul(projector2,np.append(axisz1,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisz1,1))[3])/10.)
-projectedaxisz2 = np.matmul(projector2,np.append(axisz2,1))[0:2] / ((10 - np.matmul(projector2,np.append(axisz2,1))[3])/10.)
+projectedaxisx1 = project2(axisx1)
+projectedaxisx2 = project2(axisx2) 
+projectedaxisy1 = project2(axisy1)
+projectedaxisy2 = project2(axisy2)
+projectedaxisz1 = project2(axisz1)
+projectedaxisz2 = project2(axisz2)
 
 
 ## Plot the axes
@@ -105,16 +108,15 @@ while True:
     projectedcubeH = np.matmul(projector1,cubeH)
 
     ## Project the current cube from 3-space to 2-space with homogeneous coordinates
-    projectedcubeA = np.matmul(projector2,np.append(cubeA,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeA,1))[3])/10.)
-    projectedcubeB = np.matmul(projector2,np.append(cubeB,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeB,1))[3])/10.)
-    projectedcubeC = np.matmul(projector2,np.append(cubeC,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeC,1))[3])/10.)
-    projectedcubeD = np.matmul(projector2,np.append(cubeD,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeD,1))[3])/10.)
-    projectedcubeE = np.matmul(projector2,np.append(cubeE,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeE,1))[3])/10.)
-    projectedcubeF = np.matmul(projector2,np.append(cubeF,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeF,1))[3])/10.)
-    projectedcubeG = np.matmul(projector2,np.append(cubeG,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeG,1))[3])/10.)
-    projectedcubeH = np.matmul(projector2,np.append(cubeH,1))[0:2] / ((10 - np.matmul(projector2,np.append(cubeH,1))[3])/10.)
+    projectedcubeA = project2(cubeA)
+    projectedcubeB = project2(cubeB)
+    projectedcubeC = project2(cubeC)
+    projectedcubeD = project2(cubeD)
+    projectedcubeE = project2(cubeE)
+    projectedcubeF = project2(cubeF)
+    projectedcubeG = project2(cubeG)
+    projectedcubeH = project2(cubeH)
 
-    
 
     # Label the vertices (doesn't work when the cube is spinning)
     # for T in range(0,8):
@@ -124,19 +126,23 @@ while True:
     #     lab = Text(point,T)
     #     lab.draw(win)
 
+    def gray(point1,point2):
+        return ((point1[2] + point2[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
+    
     ## Set the line color by the average z-depth of the two end points
-    gray1  = ((cubeA[2] + cubeB[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray2  = ((cubeA[2] + cubeD[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray3  = ((cubeA[2] + cubeE[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray4  = ((cubeC[2] + cubeB[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray5  = ((cubeC[2] + cubeD[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray6  = ((cubeC[2] + cubeG[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray7  = ((cubeF[2] + cubeB[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray8  = ((cubeF[2] + cubeE[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray9  = ((cubeF[2] + cubeG[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255    
-    gray10 = ((cubeH[2] + cubeD[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray11 = ((cubeH[2] + cubeE[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
-    gray12 = ((cubeH[2] + cubeG[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
+    gray1  = gray(cubeA,cubeB) ;
+    gray2  = gray(cubeA,cubeD) ;
+    gray3  = gray(cubeA,cubeE) ;
+    gray4  = gray(cubeC,cubeB) ;
+    gray5  = gray(cubeC,cubeD) ;
+    gray6  = gray(cubeC,cubeG) ;
+    gray7  = gray(cubeF,cubeB) ;
+    gray8  = gray(cubeF,cubeB) ;
+    gray9  = gray(cubeF,cubeB) ;
+    gray10 = gray(cubeH,cubeB) ;
+    gray11 = gray(cubeH,cubeB) ;
+    gray12 = gray(cubeH,cubeB) ;
+    
 
     # Define and draw the twelve edges for the projected cube
     line1 = Line(Point(projectedcubeA[0],projectedcubeA[1]),Point(projectedcubeB[0],projectedcubeB[1]) )

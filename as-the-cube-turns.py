@@ -127,7 +127,7 @@ while True:
     #     lab.draw(win)
 
     def gray(point1,point2):
-        return ((point1[2] + point2[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255
+        return int(((point1[2] + point2[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255)
     
     ## Set the line color by the average z-depth of the two end points
     gray1  = gray(cubeA,cubeB) ;

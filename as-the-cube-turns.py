@@ -1,6 +1,22 @@
 import numpy as np
+from Tkinter import *
 from graphics import *
 from time import sleep
+
+
+## Set up sliders to control rotation
+master = Tk()
+w1 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='pitch')
+w1.set(0)
+w1.pack()
+w2 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='yaw')
+w2.set(0)
+w2.pack()
+w3 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='roll')
+w3.set(0)
+w3.pack()
+
+
 
 ## Create a 1000 pixel x 1000 pixel graphics window
 win = GraphWin("My Stage", 1000, 1000,autoflush=False)
@@ -9,6 +25,10 @@ win.setBackground("white")
 
 ## Give window coordinates from (-3,-3) to (3,3)
 win.setCoords(-3, -3, 3, 3)
+
+
+
+
 
 ## Projection matrix takes a 3-d vector (x,y,z) and projects to 2-d (x',y')
 ## Oblique orthonormal
@@ -84,43 +104,43 @@ beta  = 0
 alpha = 0
 
 ## Create the initial cube with vertices A-H
-cubeA = np.array([-1,-1,-1])
-cubeB = np.array([1,-1,-1]) 
-cubeC = np.array([1,1,-1])  
-cubeD = np.array([-1,1,-1])
-cubeE = np.array([-1,-1,1])
-cubeF = np.array([1,-1,1])  
-cubeG = np.array([1,1,1])   
-cubeH = np.array([-1,1,1])   
+vertexA = np.array([-1,-1,-1])
+vertexB = np.array([1,-1,-1]) 
+vertexC = np.array([1,1,-1])  
+vertexD = np.array([-1,1,-1])
+vertexE = np.array([-1,-1,1])
+vertexF = np.array([1,-1,1])  
+vertexG = np.array([1,1,1])   
+vertexH = np.array([-1,1,1])   
 
 ## Loop
 while True:
 ## for C in range (0,1000):
 
     ## Project the current cube from 3-space to 2-space with oblique projection
-    projectedcubeA = np.matmul(projector1,cubeA)
-    projectedcubeB = np.matmul(projector1,cubeB)
-    projectedcubeC = np.matmul(projector1,cubeC)
-    projectedcubeD = np.matmul(projector1,cubeD)
-    projectedcubeE = np.matmul(projector1,cubeE)
-    projectedcubeF = np.matmul(projector1,cubeF)
-    projectedcubeG = np.matmul(projector1,cubeG)
-    projectedcubeH = np.matmul(projector1,cubeH)
+    projectedvertexA = np.matmul(projector1,vertexA)
+    projectedvertexB = np.matmul(projector1,vertexB)
+    projectedvertexC = np.matmul(projector1,vertexC)
+    projectedvertexD = np.matmul(projector1,vertexD)
+    projectedvertexE = np.matmul(projector1,vertexE)
+    projectedvertexF = np.matmul(projector1,vertexF)
+    projectedvertexG = np.matmul(projector1,vertexG)
+    projectedvertexH = np.matmul(projector1,vertexH)
 
     ## Project the current cube from 3-space to 2-space with homogeneous coordinates
-    projectedcubeA = project2(cubeA)
-    projectedcubeB = project2(cubeB)
-    projectedcubeC = project2(cubeC)
-    projectedcubeD = project2(cubeD)
-    projectedcubeE = project2(cubeE)
-    projectedcubeF = project2(cubeF)
-    projectedcubeG = project2(cubeG)
-    projectedcubeH = project2(cubeH)
+    projectedvertexA = project2(vertexA)
+    projectedvertexB = project2(vertexB)
+    projectedvertexC = project2(vertexC)
+    projectedvertexD = project2(vertexD)
+    projectedvertexE = project2(vertexE)
+    projectedvertexF = project2(vertexF)
+    projectedvertexG = project2(vertexG)
+    projectedvertexH = project2(vertexH)
 
 
     # Label the vertices (doesn't work when the cube is spinning)
     # for T in range(0,8):
-    #     point = Point(projectedcube[T,0],projectedcube[T,1])
+    #     point = Point(projectedvertex[T,0],projectedvertex[T,1])
     #     cir = Circle(point,0.1)
     #     cir.draw(win)
     #     lab = Text(point,T)
@@ -130,65 +150,67 @@ while True:
         return int(((point1[2] + point2[2])/2 + np.sqrt(2))/(2*np.sqrt(2)) * 255)
     
     ## Set the line color by the average z-depth of the two end points
-    gray1  = gray(cubeA,cubeB) ;
-    gray2  = gray(cubeA,cubeD) ;
-    gray3  = gray(cubeA,cubeE) ;
-    gray4  = gray(cubeC,cubeB) ;
-    gray5  = gray(cubeC,cubeD) ;
-    gray6  = gray(cubeC,cubeG) ;
-    gray7  = gray(cubeF,cubeB) ;
-    gray8  = gray(cubeF,cubeB) ;
-    gray9  = gray(cubeF,cubeB) ;
-    gray10 = gray(cubeH,cubeB) ;
-    gray11 = gray(cubeH,cubeB) ;
-    gray12 = gray(cubeH,cubeB) ;
+    gray1  = gray(vertexA,vertexB) ;
+    gray2  = gray(vertexA,vertexD) ;
+    gray3  = gray(vertexA,vertexE) ;
+    gray4  = gray(vertexC,vertexB) ;
+    gray5  = gray(vertexC,vertexD) ;
+    gray6  = gray(vertexC,vertexG) ;
+    gray7  = gray(vertexF,vertexB) ;
+    gray8  = gray(vertexF,vertexB) ;
+    gray9  = gray(vertexF,vertexB) ;
+    gray10 = gray(vertexH,vertexB) ;
+    gray11 = gray(vertexH,vertexB) ;
+    gray12 = gray(vertexH,vertexB) ;
     
 
     # Define and draw the twelve edges for the projected cube
-    line1 = Line(Point(projectedcubeA[0],projectedcubeA[1]),Point(projectedcubeB[0],projectedcubeB[1]) )
+    line1 = Line(Point(projectedvertexA[0],projectedvertexA[1]),Point(projectedvertexB[0],projectedvertexB[1]) )
     line1.setOutline(color_rgb(gray1,gray1,gray1))
     line1.draw(win)
-    line2 = Line(Point(projectedcubeA[0],projectedcubeA[1]),Point(projectedcubeD[0],projectedcubeD[1]) )
+    line2 = Line(Point(projectedvertexA[0],projectedvertexA[1]),Point(projectedvertexD[0],projectedvertexD[1]) )
     line2.setOutline(color_rgb(gray2,gray2,gray2))
     line2.draw(win)
-    line3 = Line(Point(projectedcubeA[0],projectedcubeA[1]),Point(projectedcubeE[0],projectedcubeE[1]) )
+    line3 = Line(Point(projectedvertexA[0],projectedvertexA[1]),Point(projectedvertexE[0],projectedvertexE[1]) )
     line3.setOutline(color_rgb(gray3,gray3,gray3))
     line3.draw(win)
         
-    line4 = Line(Point(projectedcubeC[0],projectedcubeC[1]),Point(projectedcubeB[0],projectedcubeB[1]) )
+    line4 = Line(Point(projectedvertexC[0],projectedvertexC[1]),Point(projectedvertexB[0],projectedvertexB[1]) )
     line4.setOutline(color_rgb(gray4,gray4,gray4))   
     line4.draw(win)
-    line5 = Line(Point(projectedcubeC[0],projectedcubeC[1]),Point(projectedcubeD[0],projectedcubeD[1]) )
+    line5 = Line(Point(projectedvertexC[0],projectedvertexC[1]),Point(projectedvertexD[0],projectedvertexD[1]) )
     line5.setOutline(color_rgb(gray5,gray5,gray5))
     line5.draw(win)
-    line6 = Line(Point(projectedcubeC[0],projectedcubeC[1]),Point(projectedcubeG[0],projectedcubeG[1]) )
+    line6 = Line(Point(projectedvertexC[0],projectedvertexC[1]),Point(projectedvertexG[0],projectedvertexG[1]) )
     line6.setOutline(color_rgb(gray6,gray6,gray6))
     line6.draw(win)
     
-    line7 = Line(Point(projectedcubeF[0],projectedcubeF[1]),Point(projectedcubeB[0],projectedcubeB[1]) )
+    line7 = Line(Point(projectedvertexF[0],projectedvertexF[1]),Point(projectedvertexB[0],projectedvertexB[1]) )
     line7.setOutline(color_rgb(gray7,gray7,gray7))
     line7.draw(win)
-    line8 = Line(Point(projectedcubeF[0],projectedcubeF[1]),Point(projectedcubeE[0],projectedcubeE[1]) )
+    line8 = Line(Point(projectedvertexF[0],projectedvertexF[1]),Point(projectedvertexE[0],projectedvertexE[1]) )
     line8.setOutline(color_rgb(gray8,gray8,gray8))
     line8.draw(win)
-    line9 = Line(Point(projectedcubeF[0],projectedcubeF[1]),Point(projectedcubeG[0],projectedcubeG[1]) )
+    line9 = Line(Point(projectedvertexF[0],projectedvertexF[1]),Point(projectedvertexG[0],projectedvertexG[1]) )
     line9.setOutline(color_rgb(gray9,gray9,gray9))
     line9.draw(win)
 
-    line10 = Line(Point(projectedcubeH[0],projectedcubeH[1]),Point(projectedcubeD[0],projectedcubeD[1]) )
+    line10 = Line(Point(projectedvertexH[0],projectedvertexH[1]),Point(projectedvertexD[0],projectedvertexD[1]) )
     line10.setOutline(color_rgb(gray10,gray10,gray10))
     line10.draw(win)
-    line11 = Line(Point(projectedcubeH[0],projectedcubeH[1]),Point(projectedcubeE[0],projectedcubeE[1]) )
+    line11 = Line(Point(projectedvertexH[0],projectedvertexH[1]),Point(projectedvertexE[0],projectedvertexE[1]) )
     line11.setOutline(color_rgb(gray11,gray11,gray11))
     line11.draw(win)
-    line12 = Line(Point(projectedcubeH[0],projectedcubeH[1]),Point(projectedcubeG[0],projectedcubeG[1]) )
+    line12 = Line(Point(projectedvertexH[0],projectedvertexH[1]),Point(projectedvertexG[0],projectedvertexG[1]) )
     line12.setOutline(color_rgb(gray12,gray12,gray12))
     line12.draw(win)
 
-    ##  Set pitch, yaw, and roll rates
-    gamma = gamma + np.pi/6000
-    # beta = beta + np.pi/36000
-    # alpha = alpha + np.pi/36000
+    ##  Set pitch, yaw, and roll rates using the sliders
+    gamma = gamma + w1.get()*np.pi/36000
+    beta = beta + w2.get()*np.pi/36000
+    alpha = alpha + w3.get()*np.pi/36000
+
+    print(gamma,beta,alpha)
 
     ## Compute the rotation matrices
     Rx = np.array([(1 ,0,                        0),            
@@ -204,14 +226,14 @@ while True:
                    (0,0, 1)])
 
     ## Rotate the cube
-    cubeA = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeA))))
-    cubeB = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeB))))
-    cubeC = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeC))))
-    cubeD = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeD))))
-    cubeE = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeE))))
-    cubeF = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeF))))
-    cubeG = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeG))))
-    cubeH = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(cubeH))))
+    vertexA = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexA))))
+    vertexB = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexB))))
+    vertexC = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexC))))
+    vertexD = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexD))))
+    vertexE = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexE))))
+    vertexF = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexF))))
+    vertexG = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexG))))
+    vertexH = np.matmul(Rz,np.matmul(Ry,np.matmul(Rx,(vertexH))))
     
     update()
     for item in [line1,line2,line3,line4,line5,line6,line7,line8,line9,line10,line11,line12]:

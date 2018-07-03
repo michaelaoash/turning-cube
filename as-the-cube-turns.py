@@ -6,13 +6,13 @@ from time import sleep
 
 ## Set up sliders to control rotation
 master = Tk()
-w1 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='pitch')
+w1 = Scale(master, from_=-60, to=60, orient=HORIZONTAL,label='pitch')
 w1.set(0)
 w1.pack()
-w2 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='yaw')
+w2 = Scale(master, from_=-60, to=60, orient=HORIZONTAL,label='yaw')
 w2.set(0)
 w2.pack()
-w3 = Scale(master, from_=-6, to=6, orient=HORIZONTAL,label='roll')
+w3 = Scale(master, from_=-60, to=60, orient=HORIZONTAL,label='roll')
 w3.set(0)
 w3.pack()
 
@@ -206,11 +206,9 @@ while True:
     line12.draw(win)
 
     ##  Set pitch, yaw, and roll rates using the sliders
-    gamma = gamma + w1.get()*np.pi/36000
-    beta = beta + w2.get()*np.pi/36000
-    alpha = alpha + w3.get()*np.pi/36000
-
-    print(gamma,beta,alpha)
+    gamma = w1.get()*np.pi/6000
+    beta = w2.get()*np.pi/6000
+    alpha = w3.get()*np.pi/6000
 
     ## Compute the rotation matrices
     Rx = np.array([(1 ,0,                        0),            
